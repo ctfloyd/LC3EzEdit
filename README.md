@@ -13,7 +13,7 @@ For an alternative syntax highlighting in VSCode see: https://marketplace.visual
   Keyboard Shortcut:
     CTRL + Space: Opens an autcomplete dialog if cursor is over an LC-3 ISA keyword. where you can then use numbers to choose autocomplete      options.
 
-INSERT IMAGE HERE
+![alt text](https://github.com/ctfloyd/LC3EzEdit/blob/master/Screen%20Shot%202019-04-10%20at%2010.20.18%20PM.png "Image of LC3 EZ Edit")
 
 **NOTE**
 This software is very experimental and very rudimental. See TODO list below.
@@ -25,4 +25,4 @@ This software is very experimental and very rudimental. See TODO list below.
   * Implement change code to binary/hex menu options
   * Fix some autocomplete bugs with directives
   * Fix save dialog having to overwrite file (opens dialog everytime)
-  
+  * DOCUMENTATION
