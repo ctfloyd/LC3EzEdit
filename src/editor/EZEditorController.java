@@ -17,12 +17,17 @@ import javafx.scene.input.KeyCombination;
 import javafx.scene.input.KeyEvent;
 import javafx.stage.Popup;
 
+/**
+ * Handles the action and behavior of the edit area.
+ */
 public class EZEditorController {
-    
+
+    // LC-3 ASM Keywords
     private static final String[] KEYWORDS = new String[] {"ADD", "AND", "BR", "JMP", "JSR", "JSRR",
                     "LD", "LDI", "LDR", "LEA", "NOT", "RET", "RTI", "ST", "STI", "STR", "TRAP",
                     "ORIG", "FILL", "BLKW", "STRINGZ", "END"};
 
+    // LC-3 ASM Keyword descriptions (how-to use)
     private static final String[] DESCRIPTIONS = new String[] {
                     "1: ADD DR, SR1, SR2\n2: ADD DR, SR1, imm5\n\n"
                                     + "Adds the values in SR1 and SR2/imm5 and sets DR to that value.",
@@ -67,29 +72,39 @@ public class EZEditorController {
                                     + "Place a null terminating string <String> starting at that location.",
                     "1: .END\n\n"
                                     + "Tells the LC-3 assembler to stop assembling your code."};
-    
+
+    // Tokens that need to be changed after autocomplete
     private static final String[] INCOMPLETE = new String[] {
                     "SR1", "SR2", "DR", "imm5", "trapvector8", "offset6", "LABEL", 
                     "BR(n/z/p)", "#", "<String>"
     };
-    
+
+    // LC-3 ISA Register
     private static final String[] REGISTERS = new String[] {
                     "R0", "R1", "R2", "R3", "R4", "R5", "R6", "R7", "PC", "IR", "PSR", "CC"
     };
 
+    // Regex filter for LC-3 ISA specific highlighting
     private static final String KEYWORD_PATTERN = "\\b(" + String.join("|", KEYWORDS) + ")\\b";
     private static final String COMMENT_PATTERN = ";.*";
     private static final String INCOMPLETE_PATTERN = "\\b(" + String.join("|", INCOMPLETE) + ")\\b";
     private static final String REGISTER_PATTERN = "\\b(" + String.join("|", REGISTERS) + ")\\b";
 
+    // Compile the Regex filters into one location
     private static final Pattern PATTERN = Pattern.compile(
                     "(?<KEYWORD>" + KEYWORD_PATTERN + ")"
                     + "|(?<COMMENT>" + COMMENT_PATTERN + ")"
                     + "|(?<INCOMPLETE>" + INCOMPLETE_PATTERN + ")"
                     + "|(?<REGISTER>" + REGISTER_PATTERN + ")");
-    
+
+    /**
+     * Setup the behavior of the controller
+     * @param editor The editor object that's going to be controlled
+     */
     public EZEditorController(EZEditor editor) {
         CodeArea edit = editor.getEditArea();
+        // Key combination to open auto-complete
+        // TODO: Make this changleable at runtime
         KeyCombination toolTipkeys = new KeyCodeCombination(KeyCode.SPACE, KeyCombination.CONTROL_DOWN);
         Runnable displayToolTip = () -> {
             int[] info = findKeyWordInCaret(edit);
@@ -109,14 +124,13 @@ public class EZEditorController {
                 Bounds caretBounds = edit.getCaretBounds().get();
                 popup.show(edit, caretBounds.getMaxX(), caretBounds.getMaxY());
                 popupPane.requestFocus();                    
-                
+
+                // Auto-complete upon presisng selection option
                 popupPane.addEventFilter(KeyEvent.ANY, e -> {
-                    // TODO: Convert to any digit and error handle problems that arise
                     if(e.getCode() == KeyCode.DIGIT1 || e.getCode() == KeyCode.DIGIT2 || e.getCharacter().equals("1") || e.getCharacter().equals("2")) {
                       e.consume();
                       if(e.getEventType() == KeyEvent.KEY_PRESSED) {
                           int keyPressed = !e.getText().equals("") ? Integer.parseInt(e.getText()) : Integer.parseInt(e.getCharacter());
-                          System.out.println(keyPressed);
                           String definition = DESCRIPTIONS[info[0]].split("\n")[keyPressed - 1];
                           definition = definition.replace(keyPressed + ": ", "");
                           definition = definition.replace(".", "");
@@ -132,20 +146,20 @@ public class EZEditorController {
 
             }
         };
-        
+
+        // Add keycombination to scene
         editor.getScene().getAccelerators().put(toolTipkeys, displayToolTip);
-        
-        
-        
+
+        // Add line numbers to edit area
         edit.setParagraphGraphicFactory(LineNumberFactory.get(edit));
         
-                   
-      
+        // Compute highlighting each time a key is pressed
         edit.setOnKeyPressed(e -> {
               edit.setStyleSpans(0, computeHighlighting(edit.getText()));
         });
         
-       
+
+        // Tab behavior
         edit.addEventFilter(KeyEvent.ANY, e -> {
             // Listener that makes Tabs into 4 space because we're civilized
             if(!e.isShiftDown() && e.getCode() == KeyCode.TAB || e.getCharacter().equals("\t")) {
@@ -195,10 +209,15 @@ public class EZEditorController {
                 }
                 edit.setStyleSpans(0, computeHighlighting(edit.getText()));
             }
-                
         });
     }
-    
+
+    /**
+     * Takes in non-styled text each keystroke and updates syntax highlighting
+     * TODO: don't recompute highlighting, only on changed text
+     * @param text Text to apply highlighting to
+     * @return The styled text
+     */
     private StyleSpans<Collection<String>> computeHighlighting(String text) {
         Matcher matcher = PATTERN.matcher(text);
         int lastKwEnd = 0;
@@ -217,6 +236,13 @@ public class EZEditorController {
         return spansBuilder.create();
     }
 
+    /**
+     * If they caret is currently on top or directly after an LC-3 ISA keyword @see KEYWORDS
+     * then return an array containing the index of the keyword in @see KEYWORDS as well as
+     * the start and end position of the keyword.
+     * @param edit The edit area
+     * @return Caret position and keyword hovered
+     */
     private int[] findKeyWordInCaret(CodeArea edit) {
         int caretPos = edit.getCaretPosition();
         // No keyword can ever be more than 6 characters from caret position

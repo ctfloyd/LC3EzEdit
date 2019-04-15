@@ -8,12 +8,23 @@ import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.SeparatorMenuItem;
 
+/**
+ * Creates and styles the menu
+ */
 public class EZMenu {
-    
+
+    // The menu bar
     private MenuBar menu;
+    // Maps string to MenuItem for easy retrieval of specific items
     private HashMap<String, MenuItem> menuItems;
+    // The parent scene
     private Scene parentScene;
-    
+
+    /**
+     * Sets up the Menu and its sub-menus
+     * @param parentScene The parent scene that this menu will be applied to
+     * @param edit The editArea this menu should apply to (save/open/conversion)
+     */
     public EZMenu(Scene parentScene, EZEditor edit) {
         this.parentScene = parentScene;
         
@@ -55,15 +66,27 @@ public class EZMenu {
         
         new EZMenuController(this, edit);
     }
-    
+
+    /**
+     * Getter for menu bar
+     * @return menu bar
+     */
     public MenuBar getMenuBar() {
         return this.menu;
     }
-    
+
+    /**
+     * Getter for the menuItems map
+     * @return menuItems hashmap
+     */
     public HashMap<String, MenuItem> getMenuItems() {
         return this.menuItems;
     }
-    
+
+    /**
+     * Getter for the parent scene
+     * @return parent scene
+     */
     public Scene getParentScene() {
         return this.parentScene;
     }
