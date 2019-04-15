@@ -9,7 +9,7 @@ For an alternative syntax highlighting in VSCode see: https://marketplace.visual
 ## Use:
   Download repository and compile into jar, or run from Main.java located in /src/application/Main.java.
   
-  Optionally: Use compiled jar in repository.
+  Optionally: Use compiled jar in /out/artifacts/LCEZEDIT_jar.
   
   Keyboard Shortcut:
   
@@ -25,6 +25,6 @@ This software is very experimental and very rudimental. See TODO list below.
   * Add ability to change colors and font scheme once compiled (can currentnly be changed in respective .css files)
   * Add ability to remap keybinds
   * Implement change code to binary/hex menu options
-  * Fix some autocomplete bugs with directives
-  * Fix save dialog having to overwrite file (opens dialog everytime)
+  ~~* Fix some autocomplete bugs with directives~~
+  ~~* Fix save dialog having to overwrite file (opens dialog everytime)~~
   * DOCUMENTATION

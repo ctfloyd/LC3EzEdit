@@ -119,6 +119,7 @@ public class EZEditorController {
                           System.out.println(keyPressed);
                           String definition = DESCRIPTIONS[info[0]].split("\n")[keyPressed - 1];
                           definition = definition.replace(keyPressed + ": ", "");
+                          definition = definition.replace(".", "");
                           edit.replaceText(info[1], info[2], definition);
                           edit.setStyleSpans(0, computeHighlighting(edit.getText()));
                       } else {

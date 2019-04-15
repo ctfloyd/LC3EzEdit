@@ -6,8 +6,8 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
-import java.util.HashMap;
-import java.util.Scanner;
+import java.util.*;
+
 import editor.EZEditor;
 import javafx.application.Platform;
 import javafx.scene.control.MenuItem;
@@ -15,6 +15,12 @@ import javafx.stage.FileChooser;
 import javafx.stage.FileChooser.ExtensionFilter;
 
 public class EZMenuController {
+    private File saveLocation;
+
+    private final String[] INSTRUCTIONS = new String[]{
+            "0001", "0101", "0000", "1100", "0100", "0100", "0010", "1010", "0110" ,"1110", "1001", "1100",
+            "1000", "0011", "1011", "0111", "1111"
+    };
 
     public EZMenuController(EZMenu menu, EZEditor edit) {
         HashMap<String, MenuItem> items = menu.getMenuItems();
@@ -24,17 +30,23 @@ public class EZMenuController {
         MenuItem cutItem = items.get("Cut");
         MenuItem copyItem = items.get("Copy");
         MenuItem pasteItem = items.get("Paste");
+        MenuItem convToHex = items.get("Hex");
+        MenuItem convToBin = items.get("Bin");
+
         saveItem.setOnAction(e -> {
             FileChooser fileChooser = new FileChooser();
             fileChooser.setTitle("Save...");
             fileChooser.getExtensionFilters().addAll(
                     new ExtensionFilter("Assembly", "*.asm"),
                     new ExtensionFilter("All Files", "*.*"));
-            File selectedFile = fileChooser.showSaveDialog(menu.getParentScene().getWindow());
+
+
+            if(saveLocation == null)
+                saveLocation = fileChooser.showSaveDialog(menu.getParentScene().getWindow());
             
             byte[] strToBytes = edit.getEditArea().getText().getBytes();
             try {
-                Files.write(Paths.get(selectedFile.getPath()), strToBytes, StandardOpenOption.CREATE, StandardOpenOption.TRUNCATE_EXISTING);
+                Files.write(Paths.get(saveLocation.getPath()), strToBytes, StandardOpenOption.CREATE, StandardOpenOption.TRUNCATE_EXISTING);
             } catch (IOException e1) {
                 // TODO Auto-generated catch block
                 e1.printStackTrace();
@@ -61,7 +73,8 @@ public class EZMenuController {
             edit.getEditArea().insertText(0, inString);
              
         });
-        
+
+
         quitItem.setOnAction(e -> {
             Platform.exit();
         });
@@ -77,8 +90,28 @@ public class EZMenuController {
         pasteItem.setOnAction(e -> {
             edit.getEditArea().paste();
         });
-        
-        
+
+//        convToBin.setOnAction(e -> {
+//            String asm = edit.getEditArea().getText();
+//        });
+//
+//        private String parseAsmToBin(String asm){
+//            StringBuilder binString = new StringBuilder();
+//            String[] lines = asm.split("\n");
+//            ArrayList<String[]> tokens = new ArrayList<>();
+//            for(String line: lines){
+//                tokens.add(line.split(" "));
+//            }
+//            for(String[] lineToken: tokens){
+//                for(String token: lineToken){
+//                    for(int i = 0; i < INSTRUCTIONS.length; i++){
+//                        if(INSTRUCTIONS[i].equals(token)){
+//                            binString.append(INSTRUCTIONS[I])
+//                        }
+//                    }
+//                }
+//            }
+//        }
     }
     
 }
