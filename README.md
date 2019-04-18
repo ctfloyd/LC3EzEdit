@@ -11,15 +11,15 @@ For an alternative syntax highlighting in VSCode see: https://marketplace.visual
   
   Optionally: Use compiled jar in /out/artifacts/LCEZEDIT_jar.
   
-  Keyboard Shortcut:
+  **Keyboard Shortcut:**
   
-    CTRL + Space: Opens an autcomplete dialog if cursor is over an LC-3 ISA keyword. where you can then use numbers to choose autocomplete      options.
+   CTRL + Space: Opens an autcomplete dialog if cursor is over an LC-3 ISA keyword. where you can then use numbers to choose autocomplete      options.
 
-  Colors:
+  **Colors:**
   
-    NOTE: PROGRAM MUST BE RELOADED AFTER MODIFYING COLORS.
+   NOTE: PROGRAM MUST BE RELOADED AFTER MODIFYING COLORS.
    
-    Colors can be changed by modifying the colors.css file in the project source. Alternatively if using a compiled .JAR be sure that a colors.css file is in the same directory as the JAR file. If you wish to change the default colors of the application that can be done by  modifying 'colors.css' in /src/editor/colors.css.
+   Colors can be changed by modifying the colors.css file in the project source. Alternatively if using a compiled .JAR be sure that a colors.css file is in the same directory as the JAR file. If you wish to change the default colors of the application that can be done by  modifying 'colors.css' in /src/editor/colors.css.
 
 ![alt text](https://github.com/ctfloyd/LC3EzEdit/blob/master/ss1.png "Image of LC3 EZ Edit")
 
