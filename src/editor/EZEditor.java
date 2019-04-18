@@ -4,6 +4,8 @@ import org.fxmisc.flowless.VirtualizedScrollPane;
 import org.fxmisc.richtext.CodeArea;
 import javafx.scene.Scene;
 
+import java.io.File;
+
 /**
  * This class is responsible for the creation and styling of the editing area.
  */
@@ -23,7 +25,13 @@ public class EZEditor {
         editArea.setId("editor");
         pane = new VirtualizedScrollPane<>(editArea);
         parentScene.getStylesheets().add(getClass().getResource("editor.css").toExternalForm());
-        parentScene.getStylesheets().add(getClass().getResource("colors.css").toExternalForm());
+
+        File colorFile = new File("colors.css");
+        if(colorFile != null && colorFile.isFile()) {
+            parentScene.getStylesheets().add("file:///" + colorFile.getAbsolutePath().replace("\\", "/"));
+        } else {
+            parentScene.getStylesheets().add(getClass().getResource("colors.css").toExternalForm());
+        }
         new EZEditorController(this);
     }
 
