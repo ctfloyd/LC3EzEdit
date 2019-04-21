@@ -58,6 +58,7 @@ public class EZMenuController {
             
             byte[] strToBytes = edit.getEditArea().getText().getBytes();
             try {
+                if(saveLocation == null) return; // Didn't select a file
                 Files.write(Paths.get(saveLocation.getPath()), strToBytes, StandardOpenOption.CREATE, StandardOpenOption.TRUNCATE_EXISTING);
             } catch (IOException e1) {
                 // TODO Auto-generated catch block
@@ -77,6 +78,7 @@ public class EZMenuController {
             String inString = "";
             Scanner readIn;
             try {
+                if(selectedFile == null) return; // Didn't select a file
                 readIn = new Scanner(selectedFile);
                 while(readIn.hasNextLine()) {
                     inString += readIn.nextLine() + "\n";
